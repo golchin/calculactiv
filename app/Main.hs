@@ -3,7 +3,7 @@ module Main (main) where
 import System.IO
 import Control.Monad
 
-comment = unlines $ [ "Type a mathematical expression to evaluate, or",
+comment = unlines  $ [ "Type a mathematical expression to evaluate, or",
                        "use 'help' to learn more" ]
 prompt = "> "
 
@@ -20,5 +20,5 @@ readLine = do
   hFlush stdout
   arg <- getLine
   when (arg /= "quit") $ do
-    putStrLn "Command..."
+    putStrLn "Command"
     readLine
