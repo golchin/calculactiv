@@ -15,9 +15,9 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
-                     , EnvInteractif
+  exposed-modules:     EnvInteractif
                      , Commands
+                     , Expressions
                      , Utils
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
