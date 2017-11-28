@@ -9,7 +9,7 @@ spec = do
 
   describe "exec" $ do
 
-    let commands = [dummy, sum']
+    let commands = [dummy, add]
 
     it "should execute the dummy command" $ do
       -- act
@@ -22,11 +22,11 @@ spec = do
 
     it "should pass parameters to command" $ do
       -- act
-      let result = exec "sum 2 5" commands
+      let result = exec "add 2 5" commands
       let msg = output result
       let cont = continue result
       -- assert
-      msg `shouldBe` "25"
+      msg `shouldBe` "7"
       cont `shouldBe` True
 
     -- it "should evalute an expression" $ do
@@ -48,14 +48,9 @@ dummy = Command {
   run = \args -> "What a dummy message :p"
 }
 
-sum' = Command {
-  name = "sum",
+add = Command {
+  name = "add",
   description = "Add two numbers together",
   exit = False,
-  run = runSum
+  run = \[_,a,b] -> show ((read a :: Int) + (read b :: Int))
 }
-
-runSum :: [String] -> String
-runSum [] = "0"
-runSum [a,b] = a ++ b
-runSum [_,a,b] = a ++ b
