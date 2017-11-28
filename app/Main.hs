@@ -3,7 +3,6 @@ module Main (main) where
 import System.IO
 import Control.Monad
 import EnvInteractif
-import Expressions
 import Commands
 
 commands = [quit]

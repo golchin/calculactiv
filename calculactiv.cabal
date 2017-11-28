@@ -17,8 +17,8 @@ library
   hs-source-dirs:      src
   exposed-modules:     EnvInteractif
                      , Commands
-                     , Expressions
                      , ExpressionParser
+                     , ExpressionEval
                      , Utils
   build-depends:       base >= 4.7 && < 5
                      , split
@@ -40,6 +40,7 @@ test-suite calculactiv-test
   other-modules:       EnvInteractifSpec
                      , CommandsSpec
                      , ExpressionParserSpec
+                     , ExpressionEvalSpec
   build-depends:       base
                      , calculactiv
                      , hspec

@@ -6,7 +6,6 @@ module EnvInteractif (
 
 import Data.Maybe
 import Commands
-import Expressions
 import Utils
 import Data.List.Split
 

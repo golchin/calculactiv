@@ -6,7 +6,7 @@ import ExpressionParser
 spec :: Spec
 spec = do
 
-  describe "parse" $ do
+  describe "parseExp" $ do
 
     it "should parse a constant" $ do
       -- act
