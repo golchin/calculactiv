@@ -17,3 +17,12 @@ evalExp (Binary o x y)
   where
     a = fromJust (evalExp x)
     b = fromJust (evalExp y)
+
+evalStr :: String -> Maybe Float
+evalStr exp = evalExp (parseExp' exp)
+
+parseExp' :: String -> Expression
+parseExp' exp =
+  case parseExp exp of
+    Right e -> e
+    Left _ -> Constant 0

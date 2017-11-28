@@ -50,3 +50,12 @@ spec = do
       let res = evalExp exp
       -- assert
       res `shouldBe` Just 20
+
+  describe "evalStr" $ do
+
+    it "should return multiply of 10 by 5" $ do
+      -- act
+      let exp = "(10 * 5)"
+      let res = evalStr exp
+      -- assert
+      res `shouldBe` Just 50

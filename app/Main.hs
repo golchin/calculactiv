@@ -2,11 +2,13 @@ module Main (main) where
 
 import System.IO
 import Control.Monad
-import EnvInteractif
+import Data.Maybe
 import Commands
+import EnvInteractif
+import ExpressionEval
 
 commands = [quit]
-evalExp = \exp -> "An expression!"
+evaluateExp = \exp -> show (fromJust (evalStr exp))
 prompt = "> "
 
 main :: IO()
@@ -18,7 +20,7 @@ main = do
   -}
   hFlush stdout
   exp <- getLine
-  let res = exec exp commands evalExp
+  let res = exec exp commands evaluateExp
   putStrLn (output res)
   when (continue res) $ do
     main
