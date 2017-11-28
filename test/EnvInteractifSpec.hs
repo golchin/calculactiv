@@ -10,10 +10,11 @@ spec = do
   describe "exec" $ do
 
     let commands = [dummy, add]
+    let dummyExpEval = \exp -> ""
 
     it "should execute the dummy command" $ do
       -- act
-      let res = exec "dummy" commands
+      let res = exec "dummy" commands dummyExpEval
       let msg = output res
       let cont = continue res
       -- assert
@@ -22,21 +23,22 @@ spec = do
 
     it "should pass parameters to command" $ do
       -- act
-      let result = exec "add 2 5" commands
+      let result = exec "add 2 5" commands dummyExpEval
       let msg = output result
       let cont = continue result
       -- assert
       msg `shouldBe` "7"
       cont `shouldBe` True
 
-    -- it "should evalute an expression" $ do
-    --   -- act
-    --   let result = exec "2 + 3" commands
-    --   let msg = message result
-    --   let cont = continue result
-    --   -- assert
-    --   msg `shouldBe` "5"
-    --   cont `shouldBe` True
+    it "should evalute an expression" $ do
+      -- act
+      let stubExpEval = \exp -> "5"
+      let result = exec "2 + 3" commands stubExpEval
+      let msg = output result
+      let cont = continue result
+      -- assert
+      msg `shouldBe` "5"
+      cont `shouldBe` True
 
 
 -- we've to define a some dummy commands for testing purpose

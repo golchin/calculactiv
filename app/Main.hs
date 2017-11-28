@@ -7,6 +7,7 @@ import Expressions
 import Commands
 
 commands = [quit]
+evalExp = \exp -> "An expression!"
 prompt = "> "
 
 main :: IO()
@@ -18,7 +19,7 @@ main = do
   -}
   hFlush stdout
   exp <- getLine
-  let res = exec exp commands
+  let res = exec exp commands evalExp
   putStrLn (output res)
   when (continue res) $ do
     main
