@@ -30,7 +30,7 @@ spec = do
       msg `shouldBe` "7"
       cont `shouldBe` True
 
-    it "should evalute an expression" $ do
+    it "should evaluate an expression" $ do
       -- act
       let stubExpEval = \exp -> "5"
       let result = exec "2 + 3" commands stubExpEval
@@ -40,9 +40,9 @@ spec = do
       msg `shouldBe` "5"
       cont `shouldBe` True
 
-
--- we've to define a some dummy commands for testing purpose
-
+{--
+  we've to define a some dummy commands for testing purpose
+  --}
 dummy = Command {
   name = "dummy",
   description = "A dummy command for test",

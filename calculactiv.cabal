@@ -36,7 +36,7 @@ test-suite calculactiv-test
   hs-source-dirs:      test
   main-is:             Spec.hs
   other-modules:       EnvInteractifSpec
-  --                    , CommandsSpec
+                     , CommandsSpec
   build-depends:       base
                      , calculactiv
                      , hspec
