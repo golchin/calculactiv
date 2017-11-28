@@ -18,9 +18,11 @@ library
   exposed-modules:     EnvInteractif
                      , Commands
                      , Expressions
+                     , ExpressionParser
                      , Utils
   build-depends:       base >= 4.7 && < 5
                      , split
+                     , parsec
   default-language:    Haskell2010
 
 executable calculactiv-exe
@@ -37,6 +39,7 @@ test-suite calculactiv-test
   main-is:             Spec.hs
   other-modules:       EnvInteractifSpec
                      , CommandsSpec
+                     , ExpressionParserSpec
   build-depends:       base
                      , calculactiv
                      , hspec
