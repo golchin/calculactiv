@@ -2,55 +2,60 @@ module EnvInteractifSpec where
 
 import Test.Hspec
 import EnvInteractif
-import qualified Commands
-import Expressions
+import Commands
 
 spec :: Spec
 spec = do
 
   describe "exec" $ do
 
-    let context = EnvContext {
-      supportedCommands = [ dummy ],
-      evaluateExpression = stubEvaluateExpression
-    }
+    let commands = [dummy, sum']
 
     it "should execute the dummy command" $ do
       -- act
-      let result = exec "dummy" context
-      let msg = message result
-      let cont = continue result
+      let res = exec "dummy" commands
+      let msg = output res
+      let cont = continue res
       -- assert
       msg `shouldBe` "What a dummy message :p"
+      cont `shouldBe` False
+
+    it "should pass parameters to command" $ do
+      -- act
+      let result = exec "sum 2 5" commands
+      let msg = output result
+      let cont = continue result
+      -- assert
+      msg `shouldBe` "25"
       cont `shouldBe` True
 
-    it "should evalute an expression" $ do
-        -- act
-        let result = exec "2 + 3" context
-        let msg = message result
-        let cont = continue result
-        -- assert
-        msg `shouldBe` "5"
-        cont `shouldBe` True
+    -- it "should evalute an expression" $ do
+    --   -- act
+    --   let result = exec "2 + 3" commands
+    --   let msg = message result
+    --   let cont = continue result
+    --   -- assert
+    --   msg `shouldBe` "5"
+    --   cont `shouldBe` True
 
 
--- we've to define a dummy command for testing purpose
+-- we've to define a some dummy commands for testing purpose
 
-dummy = Commands.Command {
-  Commands.name = "dummy",
-  Commands.description = "A dummy command for test",
-  Commands.invoke = doDummy
+dummy = Command {
+  name = "dummy",
+  description = "A dummy command for test",
+  exit = True,
+  run = \args -> "What a dummy message :p"
 }
 
-doDummy :: Commands.CommandContext -> Commands.CommandResult
-doDummy ctx = Commands.CommandResult {
-  Commands.message = "What a dummy message :p",
-  Commands.continue = True
+sum' = Command {
+  name = "sum",
+  description = "Add two numbers together",
+  exit = False,
+  run = runSum
 }
 
--- and a stub implementation of evaluateExpression function
-
-stubEvaluateExpression :: String -> ExpressionResult
-stubEvaluateExpression exp = ExpressionResult {
-  result = "5"
-}
+runSum :: [String] -> String
+runSum [] = "0"
+runSum [a,b] = a ++ b
+runSum [_,a,b] = a ++ b

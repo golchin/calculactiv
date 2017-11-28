@@ -2,23 +2,23 @@ module Main (main) where
 
 import System.IO
 import Control.Monad
+import EnvInteractif
+import Expressions
+import Commands
 
-comment = unlines  $ [ "Type a mathematical expression to evaluate, or",
-                       "use 'help' to learn more" ]
+commands = [quit]
 prompt = "> "
 
 main :: IO()
 main = do
-  putStrLn comment
-  readLine
-
-readLine :: IO()
-readLine = do
-  -- we've to flush the output buffer, becasue haskell flushes it
-  -- at the end of the line
   putStr prompt
+  {-
+    we've to flush the output buffer, becasue haskell flushes it
+    at the end of the line
+  -}
   hFlush stdout
-  arg <- getLine
-  when (arg /= "quit") $ do
-    putStrLn "Command"
-    readLine
+  exp <- getLine
+  let res = exec exp commands
+  putStrLn (output res)
+  when (continue res) $ do
+    main

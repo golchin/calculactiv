@@ -1,45 +1,28 @@
 module EnvInteractif (
-  EnvContext(..),
-  EnvResult(..),
-  EvaluateExpressionHandler,
+  Result(..),
   exec
 ) where
 
 import Data.Maybe
-import qualified Commands
+import Commands
 import Expressions
 import Utils
+import Data.List.Split
 
-type EvaluateExpressionHandler = String -> ExpressionResult
-
-data EnvContext = EnvContext {
-  supportedCommands :: [Commands.Command],
-  evaluateExpression :: EvaluateExpressionHandler
-}
-
-data EnvResult = EnvResult {
-  message :: String,
+data Result = Result {
+  output :: String,
   continue :: Bool
-} deriving (Eq, Show)
-
-exec :: String -> EnvContext -> EnvResult
-exec exp context
-  | not $ isNothing cmd = transformCommandResult $ Commands.invoke (fromJust cmd) cmdContext
-  | otherwise = transformExpressionResult $ evaluateExpression context exp
-  where cmd = findCommand exp context -- find command by expression
-        cmdContext = Commands.CommandContext {}
-
-findCommand :: String -> EnvContext -> Maybe Commands.Command
-findCommand nm ctx = head' [ x | x <- supportedCommands ctx, Commands.name x == nm ]
-
-transformCommandResult :: Commands.CommandResult -> EnvResult
-transformCommandResult res = EnvResult {
-  message = Commands.message res,
-  continue = Commands.continue res
 }
 
-transformExpressionResult :: ExpressionResult -> EnvResult
-transformExpressionResult res = EnvResult {
-  message = result res,
-  continue = True
-}
+exec :: String -> [Command] -> Result
+exec exp cmds
+  | isCmd = Result { output = run cmd args, continue = not (exit cmd) }
+  -- | otherwise = evaluateExpression context exp
+  where args = splitOn " " exp
+        name = head args
+        res = findCommand name cmds
+        cmd = fromJust res
+        isCmd = not (isNothing res)
+
+findCommand :: String -> [Command] -> Maybe Command
+findCommand nm cmds = head' [ x | x <- cmds, name x == nm ]

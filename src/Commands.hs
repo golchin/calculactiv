@@ -1,34 +1,21 @@
 module Commands (
-  CommandContext(..),
-  CommandResult(..),
-  Handler,
+  RunHandler,
   Command(..),
-  quit,
+  quit
 ) where
 
-data CommandContext = CommandContext { }
-
-data CommandResult = CommandResult {
-  message :: String,
-  continue :: Bool
-}
-
-type Handler = CommandContext -> CommandResult
+type RunHandler = [String] -> String
 
 data Command = Command {
   name :: String,
   description :: String,
-  invoke :: Handler
+  exit :: Bool,
+  run :: RunHandler
 }
 
 quit = Command {
   name = "quit",
   description = "Leave the program.",
-  invoke = doQuit
-}
-
-doQuit :: CommandContext -> CommandResult
-doQuit ctx = CommandResult {
-  message = "",
-  continue = False
+  exit = True,
+  run = \args -> "Bye Bye!"
 }
