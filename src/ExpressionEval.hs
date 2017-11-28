@@ -1,4 +1,7 @@
-module ExpressionEval where
+module ExpressionEval (
+  evalExp,
+  evalStr
+) where
 
 import ExpressionParser
 import Data.Maybe

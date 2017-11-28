@@ -47,12 +47,12 @@ dummy = Command {
   name = "dummy",
   description = "A dummy command for test",
   exit = True,
-  run = \args -> "What a dummy message :p"
+  run = \args _ -> "What a dummy message :p"
 }
 
 add = Command {
   name = "add",
   description = "Add two numbers together",
   exit = False,
-  run = \[_,a,b] -> show ((read a :: Int) + (read b :: Int))
+  run = \[_,a,b] _ -> show ((read a :: Int) + (read b :: Int))
 }

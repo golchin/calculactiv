@@ -22,7 +22,7 @@ exec exp cmds eval
     first, we've to check wether it's a command call or not, if so then we
     should run the command and create and return the result.
     --}
-  | isCmd = Result { output = run cmd args, continue = not (exit cmd) }
+  | isCmd = Result { output = run cmd args cmds, continue = not (exit cmd) }
   {--
     otherwise, it should be an expression, so we've to evaluate it then
     create and return the result.

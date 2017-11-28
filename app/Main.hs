@@ -7,7 +7,7 @@ import Commands
 import EnvInteractif
 import ExpressionEval
 
-commands = [quit]
+commands = [quit, help]
 evaluateExp = \exp -> show (fromJust (evalStr exp))
 prompt = "> "
 
