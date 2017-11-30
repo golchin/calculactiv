@@ -1,11 +1,13 @@
 module Commands (
   RunHandler,
   Command(..),
+  findCommand,
   quit,
   help
 ) where
 
 import Common
+import Utils
 
 type RunHandler = [String] -> [Command] -> Result
 
@@ -14,6 +16,9 @@ data Command = Command {
   description :: String,
   run :: RunHandler
 }
+
+findCommand :: String -> [Command] -> Maybe Command
+findCommand nm cmds = head' [ x | x <- cmds, name x == nm ]
 
 quit = Command {
   name = "quit",

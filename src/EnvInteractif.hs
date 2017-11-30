@@ -7,7 +7,6 @@ module EnvInteractif (
 import Data.Maybe
 import Common
 import Commands
-import Utils
 import Data.List.Split
 
 exec :: String -> [Command] -> ExpressionEval -> Result
@@ -33,6 +32,3 @@ exec exp cmds eval
         findRes = findCommand name cmds
         cmd = fromJust findRes
         isCmd = not (isNothing findRes)
-
-findCommand :: String -> [Command] -> Maybe Command
-findCommand nm cmds = head' [ x | x <- cmds, name x == nm ]
