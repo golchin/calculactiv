@@ -4,7 +4,8 @@ module Commands (
   findCommand,
   quit,
   help,
-  set
+  set,
+  vars
 ) where
 
 import Common
@@ -47,6 +48,16 @@ set = Command {
   run = \[_,k,v] s _ -> Result {
     store = (k, read v :: Float):s,
     output = k ++ " = " ++ v,
+    continue = True
+  }
+}
+
+vars = Command {
+  name = "vars",
+  description = "Lists all variables.",
+  run = \_ s _ -> Result {
+    store = s,
+    output = unlines [ k ++ " = " ++ show v | (k, v) <- s ],
     continue = True
   }
 }

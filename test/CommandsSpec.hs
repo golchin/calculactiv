@@ -43,6 +43,18 @@ spec = do
       out `shouldBe` "x = 10"
       cont `shouldBe` True
 
+  describe "vars" $ do
+
+    it "should list all variables" $ do
+      -- act
+      let store = [("y", 5)]
+      let res = run vars ["vars"] store []
+      let out = output res
+      let cont = continue res
+      -- assert
+      out `shouldBe` "y = 5.0\n"
+      cont `shouldBe` True
+
 {--
   we've to define a some dummy commands for testing purpose
   --}
