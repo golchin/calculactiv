@@ -11,11 +11,16 @@ spec = do
   describe "exec" $ do
 
     let commands = [dummy, add]
-    let dummyExpEval = \exp -> Result { output = "", continue = True }
+    let dummyExpEval = \exp s -> Result {
+      store = s,
+      output = "",
+      continue = True
+    }
 
     it "should execute the dummy command" $ do
       -- act
-      let res = exec "dummy" commands dummyExpEval
+      let store = []
+      let res = exec "dummy" store commands dummyExpEval
       let msg = output res
       let cont = continue res
       -- assert
@@ -24,7 +29,8 @@ spec = do
 
     it "should pass parameters to command" $ do
       -- act
-      let result = exec "add 2 5" commands dummyExpEval
+      let store = []
+      let result = exec "add 2 5" store commands dummyExpEval
       let msg = output result
       let cont = continue result
       -- assert
@@ -33,8 +39,13 @@ spec = do
 
     it "should evaluate an expression" $ do
       -- act
-      let stubExpEval = \exp -> Result { output = "5", continue = True }
-      let result = exec "2 + 3" commands stubExpEval
+      let store = []
+      let stubExpEval = \exp s -> Result {
+        store = s,
+        output = "5",
+        continue = True
+      }
+      let result = exec "2 + 3" store commands stubExpEval
       let msg = output result
       let cont = continue result
       -- assert
@@ -47,7 +58,8 @@ spec = do
 dummy = Command {
   name = "dummy",
   description = "A dummy command for test",
-  run = \args _ -> Result {
+  run = \args s _  -> Result {
+    store = s,
     output = "What a dummy message :p",
     continue = False
   }
@@ -56,7 +68,8 @@ dummy = Command {
 add = Command {
   name = "add",
   description = "Add two numbers together",
-  run = \[_,a,b] _ -> Result {
+  run = \[_,a,b] s _ -> Result {
+    store = s,
     output = show ((read a :: Int) + (read b :: Int)),
     continue = True
   }

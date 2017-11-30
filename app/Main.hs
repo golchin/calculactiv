@@ -3,6 +3,7 @@ module Main (main) where
 import System.IO
 import Control.Monad
 import Data.Maybe
+import Common
 import Commands
 import EnvInteractif
 import ExpressionEval
@@ -11,7 +12,10 @@ commands = [quit, help]
 prompt = "> "
 
 main :: IO()
-main = do
+main = readLine []
+
+readLine :: Store -> IO()
+readLine s = do
   putStr prompt
   {-
     we've to flush the output buffer, becasue haskell flushes it
@@ -19,7 +23,7 @@ main = do
   -}
   hFlush stdout
   exp <- getLine
-  let res = exec exp commands evalStr'
+  let res = exec exp s commands evalStr'
   putStrLn (output res)
   when (continue res) $ do
-    main
+    readLine (store res)

@@ -3,13 +3,14 @@ module Commands (
   Command(..),
   findCommand,
   quit,
-  help
+  help,
+  set
 ) where
 
 import Common
 import Utils
 
-type RunHandler = [String] -> [Command] -> Result
+type RunHandler = [String] -> Store -> [Command] -> Result
 
 data Command = Command {
   name :: String,
@@ -23,7 +24,8 @@ findCommand nm cmds = head' [ x | x <- cmds, name x == nm ]
 quit = Command {
   name = "quit",
   description = "Leave the program.",
-  run = \_ _ -> Result {
+  run = \_ s _ -> Result {
+    store = s,
     output = "Bye Bye!",
     continue = False
   }
@@ -32,8 +34,19 @@ quit = Command {
 help = Command {
   name = "help",
   description = "Learn more about calculactiv.",
-  run = \_ cmds -> Result {
+  run = \_ s cmds -> Result {
+    store = s,
     output = unlines [name c ++ " - " ++ description c | c <- cmds],
+    continue = True
+  }
+}
+
+set = Command {
+  name = "set",
+  description = "Add a new variable.",
+  run = \[_,k,v] s _ -> Result {
+    store = (k, read v :: Float):s,
+    output = k ++ " = " ++ v,
     continue = True
   }
 }

@@ -11,43 +11,49 @@ spec = do
 
     it "should return number between parens" $ do
       -- act
+      let store = []
       let exp = Parens (Constant 7)
-      let res = evalExp exp
+      let res = evalExp exp store
       -- assert
       res `shouldBe` Just 7
 
     it "should return 10" $ do
       -- act
+      let store = []
       let exp = Constant 10
-      let res = evalExp exp
+      let res = evalExp exp store
       -- assert
       res `shouldBe` Just 10
 
     it "should return sum of 2 and 3" $ do
       -- act
+      let store = []
       let exp = Binary Add (Constant 2) (Constant 3)
-      let res = evalExp exp
+      let res = evalExp exp store
       -- assert
       res `shouldBe` Just 5
 
     it "should return subtract of 10 and 6" $ do
       -- act
+      let store = []
       let exp = Binary Subtract (Constant 10) (Constant 6)
-      let res = evalExp exp
+      let res = evalExp exp store
       -- assert
       res `shouldBe` Just 4
 
     it "should return multiply of 2 by 3" $ do
       -- act
+      let store = []
       let exp = Binary Multiply (Constant 2) (Constant 3)
-      let res = evalExp exp
+      let res = evalExp exp store
       -- assert
       res `shouldBe` Just 6
 
     it "should return divide of 100 by 5" $ do
       -- act
+      let store = []
       let exp = Binary Divide (Constant 100) (Constant 5)
-      let res = evalExp exp
+      let res = evalExp exp store
       -- assert
       res `shouldBe` Just 20
 
@@ -55,7 +61,8 @@ spec = do
 
     it "should return multiply of 10 by 5" $ do
       -- act
+      let store = []
       let exp = "(10 * 5)"
-      let res = evalStr exp
+      let res = evalStr exp store
       -- assert
       res `shouldBe` Just 50
