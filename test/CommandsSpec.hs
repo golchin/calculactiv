@@ -1,6 +1,7 @@
 module CommandsSpec where
 
 import Test.Hspec
+import Common
 import Commands
 
 spec :: Spec
@@ -10,20 +11,24 @@ spec = do
 
     it "should stop the program" $ do
       -- act
-      let msg = run quit ["quit"] []
-      let e = exit quit
+      let res = run quit ["quit"] []
+      let out = output res
+      let cont = continue res
       -- assert
-      msg `shouldBe` "Bye Bye!"
-      e `shouldBe` True
+      out `shouldBe` "Bye Bye!"
+      cont `shouldBe` False
 
   describe "help" $ do
 
     it "should show descriptions" $ do
       -- act
       let commands = [a, b]
-      let msg = run help ["help"] commands
+      let res = run help ["help"] commands
+      let out = output res
+      let cont = continue res
       -- assert
-      msg `shouldBe` "a - Command A\nb - Command B\n"
+      out `shouldBe` "a - Command A\nb - Command B\n"
+      cont `shouldBe` True
 
 {--
   we've to define a some dummy commands for testing purpose
@@ -31,13 +36,11 @@ spec = do
 a = Command {
   name = "a",
   description = "Command A",
-  exit = False,
-  run = \_ _ -> ""
+  run = \_ _ -> Result { output = "", continue = True }
 }
 
 b = Command {
   name = "b",
   description = "Command B",
-  exit = False,
-  run = \_ _ -> ""
+  run = \_ _ -> Result { output = "", continue = True }
 }

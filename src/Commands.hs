@@ -5,25 +5,30 @@ module Commands (
   help
 ) where
 
-type RunHandler = [String] -> [Command] -> String
+import Common
+
+type RunHandler = [String] -> [Command] -> Result
 
 data Command = Command {
   name :: String,
   description :: String,
-  exit :: Bool,
   run :: RunHandler
 }
 
 quit = Command {
   name = "quit",
   description = "Leave the program.",
-  exit = True,
-  run = \_ _ -> "Bye Bye!"
+  run = \_ _ -> Result {
+    output = "Bye Bye!",
+    continue = False
+  }
 }
 
 help = Command {
   name = "help",
   description = "Learn more about calculactiv.",
-  exit = False,
-  run = \_ cmds -> unlines [name c ++ " - " ++ description c | c <- cmds]
+  run = \_ cmds -> Result {
+    output = unlines [name c ++ " - " ++ description c | c <- cmds],
+    continue = True
+  }
 }

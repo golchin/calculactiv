@@ -2,6 +2,7 @@ module EnvInteractifSpec where
 
 import Test.Hspec
 import EnvInteractif
+import Common
 import Commands
 
 spec :: Spec
@@ -10,7 +11,7 @@ spec = do
   describe "exec" $ do
 
     let commands = [dummy, add]
-    let dummyExpEval = \exp -> ""
+    let dummyExpEval = \exp -> Result { output = "", continue = True }
 
     it "should execute the dummy command" $ do
       -- act
@@ -32,7 +33,7 @@ spec = do
 
     it "should evaluate an expression" $ do
       -- act
-      let stubExpEval = \exp -> "5"
+      let stubExpEval = \exp -> Result { output = "5", continue = True }
       let result = exec "2 + 3" commands stubExpEval
       let msg = output result
       let cont = continue result
@@ -46,13 +47,17 @@ spec = do
 dummy = Command {
   name = "dummy",
   description = "A dummy command for test",
-  exit = True,
-  run = \args _ -> "What a dummy message :p"
+  run = \args _ -> Result {
+    output = "What a dummy message :p",
+    continue = False
+  }
 }
 
 add = Command {
   name = "add",
   description = "Add two numbers together",
-  exit = False,
-  run = \[_,a,b] _ -> show ((read a :: Int) + (read b :: Int))
+  run = \[_,a,b] _ -> Result {
+    output = show ((read a :: Int) + (read b :: Int)),
+    continue = True
+  }
 }

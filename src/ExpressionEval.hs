@@ -1,8 +1,10 @@
 module ExpressionEval (
   evalExp,
-  evalStr
+  evalStr,
+  evalStr'
 ) where
 
+import Common
 import ExpressionParser
 import Data.Maybe
 
@@ -20,6 +22,12 @@ evalExp (Binary o x y)
   where
     a = fromJust (evalExp x)
     b = fromJust (evalExp y)
+
+evalStr' :: String -> Result
+evalStr' exp = Result {
+  output = show (fromJust (evalStr exp)),
+  continue = True
+}
 
 evalStr :: String -> Maybe Float
 evalStr exp = evalExp (parseExp' exp)

@@ -8,7 +8,6 @@ import EnvInteractif
 import ExpressionEval
 
 commands = [quit, help]
-evaluateExp = \exp -> show (fromJust (evalStr exp))
 prompt = "> "
 
 main :: IO()
@@ -20,7 +19,7 @@ main = do
   -}
   hFlush stdout
   exp <- getLine
-  let res = exec exp commands evaluateExp
+  let res = exec exp commands evalStr'
   putStrLn (output res)
   when (continue res) $ do
     main
