@@ -60,6 +60,13 @@ spec = do
       -- assert
       res `shouldBe` Just 8
 
+    it "should return 0 when variable does not exist" $ do
+      -- act
+      let exp = Var "x"
+      let res = evalExp exp []
+      -- assert
+      res `shouldBe` Just 0
+
   describe "evalStr" $ do
 
     it "should return multiply of 10 by 5" $ do

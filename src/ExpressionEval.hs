@@ -14,7 +14,7 @@ evalExp (Parens x) store = evalExp x store
 
 evalExp (Constant x) store = Just x
 
-evalExp (Var x) store = fromStore store x
+evalExp (Var x) store = Just $ fromMaybe 0 (fromStore store x)
 
 evalExp (Binary o x y) store
   | o == Add = Just (a + b)
