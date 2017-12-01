@@ -19,50 +19,52 @@ spec = do
 
     it "should return 10" $ do
       -- act
-      let store = []
       let exp = Constant 10
-      let res = evalExp exp store
+      let res = evalExp exp []
       -- assert
       res `shouldBe` Just 10
 
     it "should return sum of 2 and 3" $ do
       -- act
-      let store = []
       let exp = Binary Add (Constant 2) (Constant 3)
-      let res = evalExp exp store
+      let res = evalExp exp []
       -- assert
       res `shouldBe` Just 5
 
     it "should return subtract of 10 and 6" $ do
       -- act
-      let store = []
       let exp = Binary Subtract (Constant 10) (Constant 6)
-      let res = evalExp exp store
+      let res = evalExp exp []
       -- assert
       res `shouldBe` Just 4
 
     it "should return multiply of 2 by 3" $ do
       -- act
-      let store = []
       let exp = Binary Multiply (Constant 2) (Constant 3)
-      let res = evalExp exp store
+      let res = evalExp exp []
       -- assert
       res `shouldBe` Just 6
 
     it "should return divide of 100 by 5" $ do
       -- act
-      let store = []
       let exp = Binary Divide (Constant 100) (Constant 5)
-      let res = evalExp exp store
+      let res = evalExp exp []
       -- assert
       res `shouldBe` Just 20
+
+    it "should evaluate variable" $ do
+      -- act
+      let store = [("x", 5), ("y", 3)]
+      let exp = Binary Add (Var "x") (Var "y")
+      let res = evalExp exp store
+      -- assert
+      res `shouldBe` Just 8
 
   describe "evalStr" $ do
 
     it "should return multiply of 10 by 5" $ do
       -- act
-      let store = []
       let exp = "(10 * 5)"
-      let res = evalStr exp store
+      let res = evalStr exp []
       -- assert
       res `shouldBe` Just 50

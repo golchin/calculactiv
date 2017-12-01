@@ -69,7 +69,7 @@ get = Command {
   description = "Gets the variable value.",
   run = \[_, k] s _ -> Result {
     store = s,
-    output = show $ fromMaybe 0 (head' [b | (a, b) <- s, a == k]),
+    output = show $ fromMaybe 0 (fromStore s k),
     continue = True
   }
 }
