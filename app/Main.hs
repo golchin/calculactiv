@@ -8,7 +8,7 @@ import Commands
 import EnvInteractif
 import ExpressionEval
 
-commands = [quit, help, set, vars]
+commands = [quit, help, set, vars, get]
 prompt = "> "
 
 main :: IO()

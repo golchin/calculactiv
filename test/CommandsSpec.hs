@@ -27,7 +27,7 @@ spec = do
       let out = output res
       let cont = continue res
       -- assert
-      out `shouldBe` "a - Command A\nb - Command B\n"
+      out `shouldBe` "a\tCommand A\nb\tCommand B"
       cont `shouldBe` True
 
   describe "set" $ do
@@ -40,7 +40,7 @@ spec = do
       let cont = continue res
       -- assert
       store' `shouldBe` [("x", 10)]
-      out `shouldBe` "x = 10"
+      out `shouldBe` "x\t10"
       cont `shouldBe` True
 
   describe "vars" $ do
@@ -52,7 +52,19 @@ spec = do
       let out = output res
       let cont = continue res
       -- assert
-      out `shouldBe` "y = 5.0\n"
+      out `shouldBe` "y\t5.0"
+      cont `shouldBe` True
+
+  describe "get" $ do
+
+    it "should return the variable value" $ do
+      -- act
+      let store = [("x", 3)]
+      let res = run get ["get", "x"] store []
+      let out = output res
+      let cont = continue res
+      -- assert
+      out `shouldBe` "3.0"
       cont `shouldBe` True
 
 {--

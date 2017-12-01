@@ -5,9 +5,11 @@ module Commands (
   quit,
   help,
   set,
-  vars
+  vars,
+  get
 ) where
 
+import Data.Maybe
 import Common
 import Utils
 
@@ -37,7 +39,7 @@ help = Command {
   description = "Learn more about calculactiv.",
   run = \_ s cmds -> Result {
     store = s,
-    output = unlines [name c ++ " - " ++ description c | c <- cmds],
+    output = (trim . unlines . fmap (\c -> name c ++ "\t" ++ description c)) cmds,
     continue = True
   }
 }
@@ -47,7 +49,7 @@ set = Command {
   description = "Add a new variable.",
   run = \[_,k,v] s _ -> Result {
     store = (k, read v :: Float):s,
-    output = k ++ " = " ++ v,
+    output = k ++ "\t" ++ v,
     continue = True
   }
 }
@@ -57,7 +59,17 @@ vars = Command {
   description = "Lists all variables.",
   run = \_ s _ -> Result {
     store = s,
-    output = unlines [ k ++ " = " ++ show v | (k, v) <- s ],
+    output = (trim . unlines . fmap (\(k, v) -> k ++ "\t" ++ show v)) s,
+    continue = True
+  }
+}
+
+get = Command {
+  name = "get",
+  description = "Gets the variable value.",
+  run = \[_, k] s _ -> Result {
+    store = s,
+    output = show $ fromMaybe 0 (head' [b | (a, b) <- s, a == k]),
     continue = True
   }
 }
