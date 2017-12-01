@@ -1,4 +1,5 @@
 # Calculactiv
+Calculactiv is a simple Math Interactive Command-line written by Haskell.
 
 ## Prerequisite
 In order to build and run the Calculactiv, you can use both GHC or Stack.
