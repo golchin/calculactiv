@@ -8,8 +8,8 @@ type Store = [(String, Float)]
 fromStore :: Store -> String -> Float
 fromStore s n = fromMaybe 0 (head' [v | (k, v) <- s, k == n])
 
-addToStore :: Store -> String -> String -> Store
-addToStore store name value = (name, read value :: Float):store
+addToStore :: Store -> String -> Float -> Store
+addToStore store name value = (name, value):store
 
 data Result = Result {
   store :: Store,

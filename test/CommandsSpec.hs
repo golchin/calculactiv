@@ -40,7 +40,7 @@ spec = do
       let cont = continue res
       -- assert
       store' `shouldBe` [("x", 10)]
-      out `shouldBe` "x\t10"
+      out `shouldBe` "x\t10.0"
       cont `shouldBe` True
 
     it "should return error with few parameters" $ do
@@ -52,6 +52,17 @@ spec = do
       -- assert
       store' `shouldBe` []
       out `shouldBe` "Invalid usage, e.g., (set x 10)"
+      cont `shouldBe` True
+
+    it "should return error with invalid value" $ do
+      -- act
+      let res = run set ["set", "x", "foo"] [] []
+      let store' = store res
+      let out = output res
+      let cont = continue res
+      -- assert
+      store' `shouldBe` []
+      out `shouldBe` "Invalid value, e.g., (set x 10)"
       cont `shouldBe` True
 
   describe "vars" $ do

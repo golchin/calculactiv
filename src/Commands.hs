@@ -8,6 +8,7 @@ module Commands (
   vars
 ) where
 
+import Text.Read
 import Data.Maybe
 import Common
 import Utils
@@ -50,16 +51,25 @@ set = Command {
 }
 
 runSet :: RunHandler
-runSet [_,k,v] s _  = Result {
-  store = addToStore s k v,
-  output = k ++ "\t" ++ v,
-  continue = True
-}
+runSet [_,k,v] s _ = runSet' k (readMaybe v :: Maybe Float) s
 runSet _ s _ = Result {
-  store = s,
-  output = "Invalid usage, e.g., (set x 10)",
-  continue = True
-}
+      store = s,
+      output = "Invalid usage, e.g., (set x 10)",
+      continue = True
+    }
+
+runSet' :: String -> Maybe Float -> Store -> Result
+runSet' k Nothing s = Result {
+      store = s,
+      output = "Invalid value, e.g., (set x 10)",
+      continue = True
+    }
+runSet' k v s = Result {
+      store = addToStore s k val,
+      output = k ++ "\t" ++ show val,
+      continue = True
+    }
+  where val = fromJust v
 
 vars = Command {
   name = "vars",
