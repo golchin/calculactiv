@@ -5,8 +5,7 @@ module Commands (
   quit,
   help,
   set,
-  vars,
-  get
+  vars
 ) where
 
 import Data.Maybe
@@ -47,11 +46,19 @@ help = Command {
 set = Command {
   name = "set",
   description = "Add a new variable.",
-  run = \[_,k,v] s _ -> Result {
-    store = (k, read v :: Float):s,
-    output = k ++ "\t" ++ v,
-    continue = True
-  }
+  run = runSet
+}
+
+runSet :: RunHandler
+runSet [_,k,v] s _  = Result {
+  store = addToStore s k v,
+  output = k ++ "\t" ++ v,
+  continue = True
+}
+runSet _ s _ = Result {
+  store = s,
+  output = "Invalid usage, e.g., (set x 10)",
+  continue = True
 }
 
 vars = Command {
@@ -60,16 +67,6 @@ vars = Command {
   run = \_ s _ -> Result {
     store = s,
     output = (trim . unlines . fmap (\(k, v) -> k ++ "\t" ++ show v)) s,
-    continue = True
-  }
-}
-
-get = Command {
-  name = "get",
-  description = "Gets the variable value.",
-  run = \[_, k] s _ -> Result {
-    store = s,
-    output = show $ fromStore s k,
     continue = True
   }
 }

@@ -43,6 +43,17 @@ spec = do
       out `shouldBe` "x\t10"
       cont `shouldBe` True
 
+    it "should return error with few parameters" $ do
+      -- act
+      let res = run set ["set", "x"] [] []
+      let store' = store res
+      let out = output res
+      let cont = continue res
+      -- assert
+      store' `shouldBe` []
+      out `shouldBe` "Invalid usage, e.g., (set x 10)"
+      cont `shouldBe` True
+
   describe "vars" $ do
 
     it "should list all variables" $ do
@@ -53,18 +64,6 @@ spec = do
       let cont = continue res
       -- assert
       out `shouldBe` "y\t5.0"
-      cont `shouldBe` True
-
-  describe "get" $ do
-
-    it "should return the variable value" $ do
-      -- act
-      let store = [("x", 3)]
-      let res = run get ["get", "x"] store []
-      let out = output res
-      let cont = continue res
-      -- assert
-      out `shouldBe` "3.0"
       cont `shouldBe` True
 
 {--
