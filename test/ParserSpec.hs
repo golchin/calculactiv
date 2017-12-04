@@ -29,15 +29,15 @@ spec = do
 
     it "should parse an add" $ do
       -- act
-      let exp = parseExpression "2 + 5"
+      let exp = parseExpression "2 + x + 6"
       -- assert
-      exp `shouldBe` Right (Addition (Constant 2) (Constant 5))
+      exp `shouldBe` Right (Addition (Constant 2) (Addition (Var "x") (Constant 6)))
 
     it "should parse a subtract" $ do
       -- act
-      let exp = parseExpression "10 - 3"
+      let exp = parseExpression "y - 3 - 2"
       -- assert
-      exp `shouldBe` Right (Subtraction (Constant 10) (Constant 3))
+      exp `shouldBe` Right (Subtraction (Var "y") (Subtraction (Constant 3) (Constant 2)))
 
     it "should parse a multiply" $ do
       -- act
@@ -51,8 +51,14 @@ spec = do
       -- assert
       exp `shouldBe` Right (Division (Constant 6) (Constant 2))
 
-    -- it "should parse unary negetive operator" $ do
-    --   -- act
-    --   let exp = parseExpression "-5"
-    --   -- assert
-    --   exp `shouldBe` Right (Negative (Constant 5))
+    it "should parse complex formula" $ do
+      -- act
+      let exp = parseExpression "2 * 5 + 5"
+      -- assert
+      exp `shouldBe` Right (Multiplication (Constant 2) (Addition (Constant 5) (Constant 5)))
+
+    it "should parse unary negetive operator" $ do
+      -- act
+      let exp = parseExpression "-5"
+      -- assert
+      exp `shouldBe` Right (Negative (Constant 5))

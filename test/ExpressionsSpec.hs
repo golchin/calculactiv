@@ -51,6 +51,13 @@ spec = do
       -- assert
       res `shouldBe` Just 20
 
+    it "should evaluate a more complex formula" $ do
+      -- act
+      let exp = (Parens (Addition (Multiplication (Constant 2) (Constant 5)) (Constant 5)))
+      let res = evalExpression exp []
+      -- assert
+      res `shouldBe` Just 15
+
     it "should evaluate variable" $ do
       -- act
       let store = [("x", 5), ("y", 3)]

@@ -41,7 +41,7 @@ parseAddition = do
   spaces
   char '+'
   spaces
-  r <- parseValue
+  r <- parseAll
   return (Addition l r)
 
 parseSubtraction :: Parser Expression
@@ -50,7 +50,7 @@ parseSubtraction = do
   spaces
   char '-'
   spaces
-  r <- parseValue
+  r <- parseAll
   return (Subtraction l r)
 
 parseMultiplication :: Parser Expression
@@ -59,7 +59,7 @@ parseMultiplication = do
   spaces
   char '*'
   spaces
-  r <- parseValue
+  r <- parseAll
   return (Multiplication l r)
 
 parseDivision :: Parser Expression
@@ -68,11 +68,11 @@ parseDivision = do
   spaces
   char '/'
   spaces
-  r <- parseValue
+  r <- parseAll
   return (Division l r)
 
 parseValue :: Parser Expression
-parseValue = (parseParens parseAll) <|> parseVar <|> parseConstant
+parseValue = (parseParens parseAll) <|> parseNegative <|> parseVar <|> parseConstant
 
 parseOperator :: Parser Expression
 parseOperator = try parseOperator1 <|> parseOperator2
