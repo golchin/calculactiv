@@ -1,6 +1,5 @@
 module Main (
-  main,
-  exec
+  main
 ) where
 
 import System.IO

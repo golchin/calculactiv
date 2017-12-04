@@ -40,8 +40,8 @@ test-suite calculactiv-test
   main-is:             Spec.hs
   other-modules:       EnvInteractifSpec
                      , CommandsSpec
-                     , ExpressionParserSpec
-                     , ExpressionEvalSpec
+                     , ParserSpec
+                     , ExpressionsSpec
   build-depends:       base
                      , calculactiv
                      , hspec
