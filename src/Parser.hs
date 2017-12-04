@@ -4,11 +4,9 @@ module Parser (
 
 import Text.Parsec (ParseError, parse, try)
 import Text.Parsec.String (Parser)
-import Text.Parsec.Char (oneOf, char, digit, letter, satisfy, spaces)
-import Text.Parsec.Combinator (many1, chainl1, eof, between)
+import Text.Parsec.Char (oneOf, char, digit, letter, spaces)
+import Text.Parsec.Combinator (many1, between)
 import Control.Applicative ((<|>))
-import Control.Monad (void, ap)
-import Data.Char (isLetter, isDigit)
 import Expressions
 
 parseExpression :: String -> Either ParseError Expression
