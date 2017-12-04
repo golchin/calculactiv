@@ -12,10 +12,10 @@ spec = do
     it "should execute the quit command" $ do
       -- act
       let res = exec "quit" []
-      let msg = output res
+      let out = output res
       let cont = continue res
       -- assert
-      msg `shouldBe` "Bye Bye!"
+      out `shouldBe` "Au revoir!"
       cont `shouldBe` False
 
     it "should pass parameters to command" $ do
@@ -27,9 +27,27 @@ spec = do
 
     it "should evaluate an expression" $ do
       -- act
-      let result = exec "x+y" [("x", 2), ("y", 3)]
-      let msg = output result
+      let result = exec "x + y" [("x", 2), ("y", 3)]
+      let out = output result
       let cont = continue result
       -- assert
-      msg `shouldBe` "5.0"
+      out `shouldBe` "5.0"
+      cont `shouldBe` True
+
+    it "should show invalid expression" $ do
+      -- act
+      let result = exec "+ 3" []
+      let out = output result
+      let cont = continue result
+      -- assert
+      out `shouldBe` "Expression invalide, par exemple, (2 + 2)."
+      cont `shouldBe` True
+
+    it "should show undefined variable" $ do
+      -- act
+      let result = exec "x" []
+      let out = output result
+      let cont = continue result
+      -- assert
+      out `shouldBe` "Variable indéfinie, définissez-la par la commande set, par exemple, (set x 10)."
       cont `shouldBe` True

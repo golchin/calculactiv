@@ -44,6 +44,6 @@ evalStringExpression str s = Result {
     exp = parseExpression str
     out = case exp of
       Right e -> case (evalExpression e s) of
-        Nothing -> "Undefined variable."
+        Nothing -> "Variable indéfinie, définissez-la par la commande set, par exemple, (set x 10)."
         Just x -> show x
-      Left _ -> "Invalid expression, e.g., (2 + 2)"
+      Left _ -> "Expression invalide, par exemple, (2 + 2)."

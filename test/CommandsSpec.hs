@@ -15,7 +15,7 @@ spec = do
       let out = output res
       let cont = continue res
       -- assert
-      out `shouldBe` "Bye Bye!"
+      out `shouldBe` "Au revoir!"
       cont `shouldBe` False
 
   describe "help" $ do
@@ -51,7 +51,7 @@ spec = do
       let cont = continue res
       -- assert
       store' `shouldBe` []
-      out `shouldBe` "Invalid usage, e.g., (set x 10)"
+      out `shouldBe` "Utilisation non valide, par exemple, (set x 10)"
       cont `shouldBe` True
 
     it "should return error with invalid value" $ do
@@ -62,7 +62,7 @@ spec = do
       let cont = continue res
       -- assert
       store' `shouldBe` []
-      out `shouldBe` "Invalid value, e.g., (set x 10)"
+      out `shouldBe` "Valeur non valide, par exemple, (set x 10)"
       cont `shouldBe` True
 
   describe "vars" $ do

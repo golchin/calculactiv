@@ -33,17 +33,17 @@ findCommand nm cmds = head' [ x | x <- cmds, name x == nm ]
 
 quit = Command {
   name = "quit",
-  description = "Leave the program.",
+  description = "Quittez le programme.",
   run = \_ s _ -> Result {
     store = s,
-    output = "Bye Bye!",
+    output = "Au revoir!",
     continue = False
   }
 }
 
 help = Command {
   name = "help",
-  description = "Learn more about calculactiv.",
+  description = "En savoir plus sur calculactiv.",
   run = \_ s cmds -> Result {
     store = s,
     output = (trim . unlines . fmap (\c -> name c ++ "\t" ++ description c)) cmds,
@@ -51,9 +51,19 @@ help = Command {
   }
 }
 
+-- unset = Command {
+--   name = "unset",
+--   description = "Remove a variable.",
+--   run = \_ s _ -> Result {
+--     store = s,
+--     output = ,
+--     continue = True
+--   }
+-- }
+
 set = Command {
   name = "set",
-  description = "Add a new variable.",
+  description = "Ajouter une nouvelle variable.",
   run = runSet
 }
 
@@ -68,20 +78,20 @@ runSet [_,k,v] s _ =
       }
     Nothing -> Result {
         store = s,
-        output = "Invalid value, e.g., (set x 10)",
+        output = "Valeur non valide, par exemple, (set x 10)",
         continue = True
       }
   where val = readMaybe v :: Maybe Float
 
 runSet _ s _ = Result {
       store = s,
-      output = "Invalid usage, e.g., (set x 10)",
+      output = "Utilisation non valide, par exemple, (set x 10)",
       continue = True
     }
 
 vars = Command {
   name = "vars",
-  description = "Lists all variables.",
+  description = "Répertorie toutes les variables.",
   run = \_ s _ -> Result {
     store = s,
     output = (trim . unlines . fmap (\(k, v) -> k ++ "\t" ++ show v)) s,
