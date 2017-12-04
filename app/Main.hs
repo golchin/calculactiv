@@ -1,14 +1,14 @@
-module Main (main) where
+module Main (
+  main,
+  exec
+) where
 
 import System.IO
 import Control.Monad
-import Data.Maybe
-import Common
-import Commands
 import EnvInteractif
-import ExpressionEval
+import Expressions
+import Commands
 
-commands = [quit, help, set, vars]
 prompt = "> "
 
 main :: IO()
@@ -23,7 +23,7 @@ readLine s = do
   -}
   hFlush stdout
   exp <- getLine
-  let res = exec exp s commands evalStr'
+  let res = exec exp s
   putStrLn (output res)
   when (continue res) $ do
     readLine (store res)

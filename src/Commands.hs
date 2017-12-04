@@ -1,5 +1,6 @@
 module Commands (
   RunHandler,
+  Result(..),
   Command(..),
   findCommand,
   quit,
@@ -10,8 +11,14 @@ module Commands (
 
 import Text.Read
 import Data.Maybe
-import Common
+import Expressions
 import Utils
+
+data Result = Result {
+  store :: Store,
+  output :: String,
+  continue :: Bool
+}
 
 type RunHandler = [String] -> Store -> [Command] -> Result
 
@@ -65,7 +72,7 @@ runSet' k Nothing s = Result {
       continue = True
     }
 runSet' k v s = Result {
-      store = addToStore s k val,
+      store = (k, val):s,
       output = k ++ "\t" ++ show val,
       continue = True
     }

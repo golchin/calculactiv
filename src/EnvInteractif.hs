@@ -1,26 +1,27 @@
 module EnvInteractif (
-  ExpressionEval,
-  Result(..),
   exec
 ) where
 
 import Data.Maybe
-import Common
-import Commands
 import Data.List.Split
+import Parser
+import Expressions
+import Commands
 
-exec :: String -> Store -> [Command] -> ExpressionEval -> Result
-exec exp store cmds eval
+supportedCommands = [quit, help, set, vars]
+
+exec :: String -> Store -> Result
+exec exp s
   {--
     first, we've to check wether it's a command call or not, if so then we
     should run the command and create and return the result.
     --}
-  | isCmd = run cmd args store cmds
+  | isCmd = run cmd args s supportedCommands
   {--
     otherwise, it should be an expression, so we've to evaluate it then
     create and return the result.
     --}
-  | otherwise = eval exp store
+  | otherwise = evalStringExpression exp s
   {--
     we've to split the expression with spaces to create a list of command
     name and params. (e.g. add 2 5)
@@ -29,6 +30,18 @@ exec exp store cmds eval
     --}
   where args = splitOn " " exp
         name = head args
-        findRes = findCommand name cmds
-        cmd = fromJust findRes
+        findRes = findCommand name supportedCommands
         isCmd = not (isNothing findRes)
+        cmd = fromJust findRes
+
+evalStringExpression :: String -> Store -> Result
+evalStringExpression str s = Result {
+      store = s,
+      output = out,
+      continue = True
+    }
+  where
+    exp = parseExpression str
+    out = case exp of
+      Right e -> show $ fromMaybe 0 (evalExpression e s)
+      Left _ -> "Invalid expression, e.g., (2 + 2)"

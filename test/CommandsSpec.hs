@@ -1,8 +1,8 @@
 module CommandsSpec where
 
 import Test.Hspec
-import Common
 import Commands
+import Expressions
 
 spec :: Spec
 spec = do
