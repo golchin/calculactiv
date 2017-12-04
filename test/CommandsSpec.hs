@@ -40,7 +40,7 @@ spec = do
       let cont = continue res
       -- assert
       store' `shouldBe` [("x", 10)]
-      out `shouldBe` "x\t10.0"
+      out `shouldBe` "x = 10"
       cont `shouldBe` True
 
     it "should return error with few parameters" $ do

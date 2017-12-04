@@ -58,25 +58,26 @@ set = Command {
 }
 
 runSet :: RunHandler
-runSet [_,k,v] s _ = runSet' k (readMaybe v :: Maybe Float) s
+
+runSet [_,k,v] s _ =
+  case val of
+    Just x -> Result {
+        store = (k, x):s,
+        output = k ++ " = " ++ v,
+        continue = True
+      }
+    Nothing -> Result {
+        store = s,
+        output = "Invalid value, e.g., (set x 10)",
+        continue = True
+      }
+  where val = readMaybe v :: Maybe Float
+
 runSet _ s _ = Result {
       store = s,
       output = "Invalid usage, e.g., (set x 10)",
       continue = True
     }
-
-runSet' :: String -> Maybe Float -> Store -> Result
-runSet' k Nothing s = Result {
-      store = s,
-      output = "Invalid value, e.g., (set x 10)",
-      continue = True
-    }
-runSet' k v s = Result {
-      store = (k, val):s,
-      output = k ++ "\t" ++ show val,
-      continue = True
-    }
-  where val = fromJust v
 
 vars = Command {
   name = "vars",
