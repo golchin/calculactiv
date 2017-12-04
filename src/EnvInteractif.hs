@@ -43,5 +43,7 @@ evalStringExpression str s = Result {
   where
     exp = parseExpression str
     out = case exp of
-      Right e -> show $ fromMaybe 0 (evalExpression e s)
+      Right e -> case (evalExpression e s) of
+        Nothing -> "Undefined variable."
+        Just x -> show x
       Left _ -> "Invalid expression, e.g., (2 + 2)"
