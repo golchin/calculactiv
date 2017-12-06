@@ -1,5 +1,7 @@
 calculactiv
 out
+spec-out
+spec
 dist
 dist-*
 cabal-dev
