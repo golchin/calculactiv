@@ -1,6 +1,6 @@
 ## Noms et prénoms
 - Maganga Mouloungui Renata Prismell
-- Mehri Golchin Kharazi
+- Golchin Kharazi Mehri
 
 ## Description de ce qui a été accompli
 Tout les modules de la première partie ont été implémenté, les operators comme (Addition, Subtraction, Multiplication, Division, Exponentiation, Sine) et les commandes comme (quit, help, set, unset, vars). Les gestions des exceptions ont été effectué dans les cas nécessaires.
