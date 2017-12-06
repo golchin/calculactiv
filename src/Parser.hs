@@ -4,7 +4,7 @@ module Parser (
 
 import Text.Parsec (ParseError, parse, try)
 import Text.Parsec.String (Parser)
-import Text.Parsec.Char (oneOf, char, digit, letter, spaces)
+import Text.Parsec.Char (oneOf, char, string, digit, letter, spaces)
 import Text.Parsec.Combinator (many1, between)
 import Control.Applicative ((<|>))
 import Expressions
@@ -32,6 +32,13 @@ parseNegative = do
   char '-'
   e <- parseValue
   return (Negative e)
+
+parseSine:: Parser Expression
+parseSine = do
+  string "sin"
+  spaces
+  e <- parseAll
+  return (Sine e)
 
 parseAddition :: Parser Expression
 parseAddition = do
@@ -79,7 +86,11 @@ parseExponentiation = do
   return (Exponentiation l r)
 
 parseValue :: Parser Expression
-parseValue = try parseParens <|> parseNegative <|> parseVar <|> parseConstant
+parseValue = try parseParens <|>
+             parseNegative <|>
+             parseSine <|>
+             parseVar <|>
+             parseConstant
 
 parseOperator :: Parser Expression
 parseOperator = try parseExponentiation <|>

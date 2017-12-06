@@ -86,3 +86,10 @@ spec = do
       let res = evalExpression exp []
       -- assert
       res `shouldBe` Just 8
+
+    it "should evaluate sine 360" $ do
+      -- act
+      let exp = Sine (Constant 360)
+      let res = evalExpression exp []
+      -- assert
+      res `shouldBe` Just 0.9589157

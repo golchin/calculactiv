@@ -19,6 +19,7 @@ data Expression = Constant Float
                 | Multiplication Expression Expression
                 | Division Expression Expression
                 | Exponentiation Expression Expression
+                | Sine Expression
                 | Negative Expression
                   deriving (Eq, Show)
 
@@ -66,3 +67,7 @@ evalExpression (Exponentiation x y) store = do
     a <- evalExpression x store
     b <- evalExpression y store
     return (a ** b)
+
+evalExpression (Sine x) store = do
+    a <- evalExpression x store
+    return (sin a)

@@ -68,3 +68,9 @@ spec = do
       let exp = parseExpression "-5"
       -- assert
       exp `shouldBe` Right (Negative (Constant 5))
+
+    it "should parse unary sin operator" $ do
+      -- act
+      let exp = parseExpression "sin 360"
+      -- assert
+      exp `shouldBe` Right (Sine (Constant 360))
