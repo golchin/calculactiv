@@ -34,7 +34,7 @@ findCommand nm cmds = head' [ x | x <- cmds, name x == nm ]
 
 quit = Command {
   name = "quit",
-  description = "Quittez le programme.",
+  description = "Quitter le programme.",
   run = \_ s _ -> Result {
     store = s,
     output = "Au revoir!",
