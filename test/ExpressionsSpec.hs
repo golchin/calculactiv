@@ -66,14 +66,14 @@ spec = do
       -- assert
       res `shouldBe` Just 8
 
-    it "should return 0 when variable does not exist" $ do
+    it "should return Nothing when variable does not exist" $ do
       -- act
       let exp = Var "x"
       let res = evalExpression exp []
       -- assert
       res `shouldBe` Nothing
 
-    it "should return evaluate negetive number" $ do
+    it "should evaluate negetive number" $ do
       -- act
       let exp = Negative (Constant 5)
       let res = evalExpression exp []

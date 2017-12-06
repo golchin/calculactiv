@@ -8,7 +8,7 @@ import Parser
 import Expressions
 import Commands
 
-supportedCommands = [quit, help, set, unset, vars]
+supportedCommands = [quit, help, set, unset, unsetAll, vars]
 
 exec :: String -> Store -> Result
 exec exp s

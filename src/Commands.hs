@@ -7,6 +7,7 @@ module Commands (
   help,
   set,
   unset,
+  unsetAll,
   vars
 ) where
 
@@ -25,15 +26,17 @@ type RunHandler = [String] -> Store -> [Command] -> Result
 
 data Command = Command {
   name :: String,
+  abbreviation :: String,
   description :: String,
   run :: RunHandler
 }
 
 findCommand :: String -> [Command] -> Maybe Command
-findCommand nm cmds = head' [ x | x <- cmds, name x == nm ]
+findCommand nm cmds = head' [ x | x <- cmds, name x == nm || abbreviation x == nm ]
 
 quit = Command {
   name = "quit",
+  abbreviation = "q",
   description = "Quitter le programme.",
   run = \_ s _ -> Result {
     store = s,
@@ -44,26 +47,48 @@ quit = Command {
 
 help = Command {
   name = "help",
+  abbreviation = "h",
   description = "En savoir plus sur calculactiv.",
   run = \_ s cmds -> Result {
     store = s,
-    output = (trim . unlines . fmap (\c -> name c ++ "\t" ++ description c)) cmds,
+    output = (trim . unlines . fmap (formatHelp)) cmds,
+    continue = True
+  }
+}
+
+unsetAll = Command {
+  name = "unsetAll",
+  abbreviation = "usall",
+  description = "Supprimer toutes les variables.",
+  run = \_ s _ -> Result {
+    store = [],
+    output = "Tout supprimés.",
     continue = True
   }
 }
 
 unset = Command {
   name = "unset",
+  abbreviation = "us",
   description = "Supprimer une variable",
-  run = \[_, k] s _ -> Result {
+  run = runUnset
+}
+
+runUnset :: RunHandler
+runUnset [_, k] s _ = Result {
     store = removeFromStore k s,
     output = k ++ " supprimé.",
     continue = True
   }
-}
+runUnset _ s _ = Result {
+    store = s,
+    output = "Utilisation non valide, par exemple, (unset x)",
+    continue = True
+  }
 
 set = Command {
   name = "set",
+  abbreviation = "s",
   description = "Ajouter une nouvelle variable.",
   run = runSet
 }
@@ -91,6 +116,7 @@ runSet _ s _ = Result {
 
 vars = Command {
   name = "vars",
+  abbreviation = "v",
   description = "Répertorie toutes les variables.",
   run = \_ s _ -> Result {
     store = s,
@@ -104,3 +130,6 @@ removeFromStore n [] = []
 removeFromStore n (val@(x, y):xs)
     | n == x = removeFromStore n xs
     | otherwise = val:removeFromStore n xs
+
+formatHelp :: Command -> String
+formatHelp c = name c ++ " - " ++ abbreviation c ++ "\n\t" ++ description c
