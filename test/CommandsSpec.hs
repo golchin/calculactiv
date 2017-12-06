@@ -22,7 +22,7 @@ spec = do
       -- act
       let res = run help ["help"] [] [a, b]
       -- assert
-      (output res) `shouldBe` "a\tCommand A\nb\tCommand B"
+      (output res) `shouldBe` "aa - a\n\tCommand A\nbb - b\n\tCommand B"
       (continue res) `shouldBe` True
 
   describe "set" $ do
@@ -69,6 +69,14 @@ spec = do
       (output res) `shouldBe` "y supprimé."
       (continue res) `shouldBe` True
 
+    it "should return error with few parameter" $ do
+      -- act
+      let res = run unset ["unset"] [("x", 1)] []
+      -- assert
+      (store res) `shouldBe` [("x", 1)]
+      (output res) `shouldBe` "Utilisation non valide, par exemple, (unset x)"
+      (continue res) `shouldBe` True
+
   describe "unsetAll" $ do
 
     it "should remove all variables" $ do
@@ -76,7 +84,7 @@ spec = do
       let res = run unsetAll ["unsetAll"] [("x", 1), ("y", 2)] []
       -- assert
       (store res) `shouldBe` []
-      (output res) `shouldBe` "Tout supprimés"
+      (output res) `shouldBe` "Tout supprimés."
       (continue res) `shouldBe` True
 
   describe "vars" $ do
@@ -93,7 +101,8 @@ spec = do
   --}
 
 a = Command {
-  name = "a",
+  name = "aa",
+  abbreviation = "a",
   description = "Command A",
   run = \_ s _ -> Result {
     store = s,
@@ -103,7 +112,8 @@ a = Command {
 }
 
 b = Command {
-  name = "b",
+  name = "bb",
+  abbreviation = "b",
   description = "Command B",
   run = \_ s _ -> Result {
     store = s,
