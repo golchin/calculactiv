@@ -79,3 +79,10 @@ spec = do
       let res = evalExpression exp []
       -- assert
       res `shouldBe` Just (-5)
+
+    it "should evaluate exponentiation" $ do
+      -- act
+      let exp = Exponentiation (Constant 2) (Constant 3)
+      let res = evalExpression exp []
+      -- assert
+      res `shouldBe` Just 8

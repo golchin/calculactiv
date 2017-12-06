@@ -12,74 +12,76 @@ spec = do
     it "should stop the program" $ do
       -- act
       let res = run quit ["quit"] [] []
-      let out = output res
-      let cont = continue res
       -- assert
-      out `shouldBe` "Au revoir!"
-      cont `shouldBe` False
+      (output res) `shouldBe` "Au revoir!"
+      (continue res) `shouldBe` False
 
   describe "help" $ do
 
     it "should show descriptions" $ do
       -- act
-      let commands = [a, b]
-      let res = run help ["help"] [] commands
-      let out = output res
-      let cont = continue res
+      let res = run help ["help"] [] [a, b]
       -- assert
-      out `shouldBe` "a\tCommand A\nb\tCommand B"
-      cont `shouldBe` True
+      (output res) `shouldBe` "a\tCommand A\nb\tCommand B"
+      (continue res) `shouldBe` True
 
   describe "set" $ do
 
     it "should add a new variable in store" $ do
       -- act
       let res = run set ["set", "x", "10"] [] []
-      let store' = store res
-      let out = output res
-      let cont = continue res
       -- assert
-      store' `shouldBe` [("x", 10)]
-      out `shouldBe` "x = 10"
-      cont `shouldBe` True
+      (store res) `shouldBe` [("x", 10)]
+      (output res) `shouldBe` "x = 10"
+      (continue res) `shouldBe` True
 
     it "should return error with few parameters" $ do
       -- act
       let res = run set ["set", "x"] [] []
-      let store' = store res
-      let out = output res
-      let cont = continue res
       -- assert
-      store' `shouldBe` []
-      out `shouldBe` "Utilisation non valide, par exemple, (set x 10)"
-      cont `shouldBe` True
+      (store res) `shouldBe` []
+      (output res) `shouldBe` "Utilisation non valide, par exemple, (set x 10)"
+      (continue res) `shouldBe` True
 
     it "should return error with invalid value" $ do
       -- act
       let res = run set ["set", "x", "foo"] [] []
-      let store' = store res
-      let out = output res
-      let cont = continue res
       -- assert
-      store' `shouldBe` []
-      out `shouldBe` "Valeur non valide, par exemple, (set x 10)"
-      cont `shouldBe` True
+      (store res) `shouldBe` []
+      (output res) `shouldBe` "Valeur non valide, par exemple, (set x 10)"
+      (continue res) `shouldBe` True
+
+    it "should replace the old value" $ do
+      -- act
+      let res = run set ["set", "x", "2"] [("x", 1)] []
+      -- assert
+      (store res) `shouldBe` [("x", 2)]
+      (output res) `shouldBe` "x = 2"
+      (continue res) `shouldBe` True
+
+  describe "unset" $ do
+
+    it "should remove a variable from store" $ do
+      -- act
+      let res = run unset ["unset", "y"] [("x", 1), ("y", 2), ("z", 3)] []
+      -- assert
+      (store res) `shouldBe` [("x", 1), ("z", 3)]
+      (output res) `shouldBe` "y supprimé."
+      (continue res) `shouldBe` True
 
   describe "vars" $ do
 
     it "should list all variables" $ do
       -- act
-      let store = [("y", 5)]
-      let res = run vars ["vars"] store []
-      let out = output res
-      let cont = continue res
+      let res = run vars ["vars"] [("y", 5)] []
       -- assert
-      out `shouldBe` "y\t5.0"
-      cont `shouldBe` True
+      (output res) `shouldBe` "y\t5.0"
+      (continue res) `shouldBe` True
 
 {--
   we've to define a some dummy commands for testing purpose
   --}
+
 a = Command {
   name = "a",
   description = "Command A",

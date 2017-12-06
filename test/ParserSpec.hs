@@ -27,29 +27,35 @@ spec = do
       -- assert
       exp `shouldBe` Right (Parens (Constant 5))
 
-    it "should parse an add" $ do
+    it "should parse an addition" $ do
       -- act
       let exp = parseExpression "2 + x + 6"
       -- assert
       exp `shouldBe` Right (Addition (Constant 2) (Addition (Var "x") (Constant 6)))
 
-    it "should parse a subtract" $ do
+    it "should parse a subtraction" $ do
       -- act
       let exp = parseExpression "y - 3 - 2"
       -- assert
       exp `shouldBe` Right (Subtraction (Var "y") (Subtraction (Constant 3) (Constant 2)))
 
-    it "should parse a multiply" $ do
+    it "should parse a multiplication" $ do
       -- act
       let exp = parseExpression "3 * x"
       -- assert
       exp `shouldBe` Right (Multiplication (Constant 3) (Var "x"))
 
-    it "should parse a divide" $ do
+    it "should parse a division" $ do
       -- act
       let exp = parseExpression "6 / 2"
       -- assert
       exp `shouldBe` Right (Division (Constant 6) (Constant 2))
+
+    it "should parse an exponentiation" $ do
+      -- act
+      let exp = parseExpression "2 ^ 3"
+      -- assert
+      exp `shouldBe` Right (Exponentiation (Constant 2) (Constant 3))
 
     it "should parse complex formula" $ do
       -- act

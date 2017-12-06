@@ -22,9 +22,9 @@ parseVar = do
   v <- many1 letter
   return (Var v)
 
-parseParens :: Parser Expression -> Parser Expression
-parseParens p = do
-  e <- between (char '(') (char ')') p
+parseParens :: Parser Expression
+parseParens = do
+  e <- between (char '(') (char ')') parseAll
   return (Parens e)
 
 parseNegative :: Parser Expression
@@ -69,17 +69,24 @@ parseDivision = do
   r <- parseAll
   return (Division l r)
 
+parseExponentiation :: Parser Expression
+parseExponentiation = do
+  l <- parseValue
+  spaces
+  char '^'
+  spaces
+  r <- parseAll
+  return (Exponentiation l r)
+
 parseValue :: Parser Expression
-parseValue = (parseParens parseAll) <|> parseNegative <|> parseVar <|> parseConstant
+parseValue = try parseParens <|> parseNegative <|> parseVar <|> parseConstant
 
 parseOperator :: Parser Expression
-parseOperator = try parseOperator1 <|> parseOperator2
-
-parseOperator1 :: Parser Expression
-parseOperator1 = try parseMultiplication <|> parseDivision
-
-parseOperator2 :: Parser Expression
-parseOperator2 = try parseAddition <|> parseSubtraction
+parseOperator = try parseExponentiation <|>
+                try parseMultiplication <|>
+                try parseDivision <|>
+                try parseAddition <|>
+                try parseSubtraction
 
 parseAll :: Parser Expression
 parseAll = try parseOperator <|> parseValue

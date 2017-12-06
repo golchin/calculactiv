@@ -6,6 +6,7 @@ module Commands (
   quit,
   help,
   set,
+  unset,
   vars
 ) where
 
@@ -51,15 +52,15 @@ help = Command {
   }
 }
 
--- unset = Command {
---   name = "unset",
---   description = "Remove a variable.",
---   run = \_ s _ -> Result {
---     store = s,
---     output = ,
---     continue = True
---   }
--- }
+unset = Command {
+  name = "unset",
+  description = "Supprimer une variable",
+  run = \[_, k] s _ -> Result {
+    store = removeFromStore k s,
+    output = k ++ " supprimé.",
+    continue = True
+  }
+}
 
 set = Command {
   name = "set",
@@ -68,11 +69,10 @@ set = Command {
 }
 
 runSet :: RunHandler
-
 runSet [_,k,v] s _ =
   case val of
     Just x -> Result {
-        store = (k, x):s,
+        store = (k, x):(removeFromStore k s),
         output = k ++ " = " ++ v,
         continue = True
       }
@@ -98,3 +98,9 @@ vars = Command {
     continue = True
   }
 }
+
+removeFromStore :: String -> Store -> Store
+removeFromStore n [] = []
+removeFromStore n (val@(x, y):xs)
+    | n == x = removeFromStore n xs
+    | otherwise = val:removeFromStore n xs
