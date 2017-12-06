@@ -50,4 +50,4 @@ test-suite calculactiv-test
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/calculactiv
+  location: https://github.com/golchin/calculactiv
