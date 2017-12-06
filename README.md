@@ -28,7 +28,7 @@ make
 ./calculactiv
 ```
 
-or use Stack as follows.
+or use Stack as follow.
 
 ```
 stack build
@@ -42,7 +42,7 @@ To run unit all unit tests you can use following command.
 make test
 ```
 
-or use Stack as follows.
+or use Stack as follow.
 
 ```
 stack test
