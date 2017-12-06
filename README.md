@@ -25,4 +25,32 @@ Après avoir installé GHC, taper make en ligne de commande pour compiler tout l
 
 ```
 make
+./calculactiv
+```
+
+or use Stack as follows.
+
+```
+stack build
+stack exec calculactiv-exe
+```
+
+## Running tests
+To run unit all unit tests you can use following command.
+
+```
+make test
+```
+
+or use Stack as follows.
+
+```
+stack test
+```
+
+# Cleaning
+You can clean all the mess, run following command.
+
+```
+make clean
 ```
