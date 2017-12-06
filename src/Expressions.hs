@@ -61,3 +61,8 @@ evalExpression (Division x y) store = do
     a <- evalExpression x store
     b <- evalExpression y store
     return (a / b)
+
+evalExpression (Exponentiation x y) store = do
+    a <- evalExpression x store
+    b <- evalExpression y store
+    return (a ** b)

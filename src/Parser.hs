@@ -79,16 +79,14 @@ parseExponentiation = do
   return (Exponentiation l r)
 
 parseValue :: Parser Expression
-parseValue = parseParens <|> parseNegative <|> parseVar <|> parseConstant
+parseValue = try parseParens <|> parseNegative <|> parseVar <|> parseConstant
 
 parseOperator :: Parser Expression
-parseOperator = try parseOperator1 <|> parseOperator2
-
-parseOperator1 :: Parser Expression
-parseOperator1 = try parseMultiplication <|> parseDivision
-
-parseOperator2 :: Parser Expression
-parseOperator2 = try parseAddition <|> parseSubtraction
+parseOperator = try parseExponentiation <|>
+                try parseMultiplication <|>
+                try parseDivision <|>
+                try parseAddition <|>
+                try parseSubtraction
 
 parseAll :: Parser Expression
 parseAll = try parseOperator <|> parseValue

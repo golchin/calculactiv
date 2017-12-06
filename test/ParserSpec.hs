@@ -51,11 +51,11 @@ spec = do
       -- assert
       exp `shouldBe` Right (Division (Constant 6) (Constant 2))
 
-    -- it "should parse an exponentiation" $ do
-    --   -- act
-    --   let exp = parseExpression "2 ^ 3"
-    --   -- assert
-    --   exp `shouldBe` Right (Exponentiation (Constant 2) (Constant 3))
+    it "should parse an exponentiation" $ do
+      -- act
+      let exp = parseExpression "2 ^ 3"
+      -- assert
+      exp `shouldBe` Right (Exponentiation (Constant 2) (Constant 3))
 
     it "should parse complex formula" $ do
       -- act
