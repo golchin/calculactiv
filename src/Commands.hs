@@ -72,7 +72,7 @@ runSet :: RunHandler
 runSet [_,k,v] s _ =
   case val of
     Just x -> Result {
-        store = (k, x):s,
+        store = (k, x):(removeFromStore k s),
         output = k ++ " = " ++ v,
         continue = True
       }

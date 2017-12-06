@@ -51,6 +51,14 @@ spec = do
       (output res) `shouldBe` "Valeur non valide, par exemple, (set x 10)"
       (continue res) `shouldBe` True
 
+    it "should replace the old value" $ do
+      -- act
+      let res = run set ["set", "x", "2"] [("x", 1)] []
+      -- assert
+      (store res) `shouldBe` [("x", 2)]
+      (output res) `shouldBe` "x = 2"
+      (continue res) `shouldBe` True
+
   describe "unset" $ do
 
     it "should remove a variable from store" $ do
