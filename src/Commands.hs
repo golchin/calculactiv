@@ -7,6 +7,7 @@ module Commands (
   help,
   set,
   unset,
+  unsetAll,
   vars
 ) where
 
@@ -48,6 +49,16 @@ help = Command {
   run = \_ s cmds -> Result {
     store = s,
     output = (trim . unlines . fmap (\c -> name c ++ "\t" ++ description c)) cmds,
+    continue = True
+  }
+}
+
+unsetAll = Command {
+  name = "unsetAll",
+  description = "Supprimer toutes les variables.",
+  run = \_ s _ -> Result {
+    store = [],
+    output = "Tout supprimés",
     continue = True
   }
 }

@@ -69,6 +69,16 @@ spec = do
       (output res) `shouldBe` "y supprimé."
       (continue res) `shouldBe` True
 
+  describe "unsetAll" $ do
+
+    it "should remove all variables" $ do
+      -- act
+      let res = run unsetAll ["unsetAll"] [("x", 1), ("y", 2)] []
+      -- assert
+      (store res) `shouldBe` []
+      (output res) `shouldBe` "Tout supprimés"
+      (continue res) `shouldBe` True
+
   describe "vars" $ do
 
     it "should list all variables" $ do
